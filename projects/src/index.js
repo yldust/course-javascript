@@ -30,7 +30,7 @@ function returnFirstArgument(a) {
  Пример:
    sumWithDefaults(10) вернет 110
  */
-function sumWithDefaults(a, b=100) {
+function sumWithDefaults(a, b = 100) {
   return a + b;
 }
 
@@ -104,10 +104,10 @@ function bindFunction(fn, ...args) {
 }
 
 export {
-    returnFirstArgument,
-    sumWithDefaults,
-    returnArgumentsArray,
-    returnFnResult,
-    returnCounter,
-    bindFunction
+  returnFirstArgument,
+  sumWithDefaults,
+  returnArgumentsArray,
+  returnFnResult,
+  returnCounter,
+  bindFunction
 }
