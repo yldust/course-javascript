@@ -85,7 +85,6 @@ describe('ДЗ 3 - объекты и массивы', () => {
 
       obj.a = 2;
       obj.b = 5;
-
       expect(obj).toEqual({ a: 4, b: 25 });
     });
   });

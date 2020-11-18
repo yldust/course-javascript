@@ -85,8 +85,9 @@ function upperProps(obj) {
  */
 function createProxy(obj) {
   const handler = {
-    set: function (target, name, value) {
-      target[name] = value * value;
+    set(target, property, value) {
+      target[property] = value * value;
+      return true;
     },
   };
 
