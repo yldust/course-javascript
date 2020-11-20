@@ -50,7 +50,7 @@ function isSomeTrue(array, fn) {
   if (!(fn instanceof Function)) throw new Error('fn is not a function');
 
   for (const number of array) {
-    if (fn(number)) return true;
+    if (fn(number) === true) return true;
   }
 
   return false;
@@ -106,34 +106,17 @@ function calculator(number = 0) {
   }
 
   const obj = {
-    sum: (...args) => {
-      for (let i = 0; i < args.length; i++) {
-        number += args[i];
-      }
-
-      return number;
-    },
-    dif: (...args) => {
-      for (let i = 0; i < args.length; i++) {
-        number -= args[i];
-      }
-      return number;
-    },
+    sum: (...args) => args.reduce((prev, current) => prev + current, number),
+    dif: (...args) => args.reduce((prev, current) => prev - current, number),
     div: (...args) => {
-      for (let i = 0; i < args.length; i++) {
-        if (args[i] === 0) {
-          throw new Error('division by 0');
-        }
-        number /= args[i];
-      }
-      return number;
+      const fn = (prev, current) => {
+        if (current === 0) throw new Error('division by 0');
+        return prev / current;
+      };
+
+      return args.reduce(fn, number);
     },
-    mul: (...args) => {
-      for (let i = 0; i < args.length; i++) {
-        number *= args[i];
-      }
-      return number;
-    },
+    mul: (...args) => args.reduce((prev, current) => prev * current, number),
   };
 
   return obj;
