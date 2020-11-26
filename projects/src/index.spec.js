@@ -61,7 +61,6 @@ describe('ДЗ 4 - Работа с DOM', () => {
 
       where.innerHTML = '<div></div><p></p><span></span><span></span><p></p>';
       const result = findAllPSiblings(where);
-
       expect(Array.isArray(result));
       expect(result).toEqual([where.children[0], where.children[3]]);
     });
