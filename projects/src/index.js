@@ -105,10 +105,10 @@ function findError(where) {
    должно быть преобразовано в <div></div><p></p>
  */
 function deleteTextNodes(where) {
-  const childNodes = where.childNodes;
+  const childNodes = [...where.childNodes];
   for (const node of childNodes) {
     if (node instanceof Text) {
-      node.remove();
+      where.removeChild(node);
     }
   }
 }
