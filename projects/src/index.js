@@ -125,14 +125,15 @@ function deleteTextNodes(where) {
    должно быть преобразовано в <span><div><b></b></div><p></p></span>
  */
 function deleteTextNodesRecursive(where) {
-  const nodes = where.childNodes;
-  for (let i = 0; i < nodes.length; i++) {
-    if (nodes[i] instanceof Element) {
-      deleteTextNodesRecursive(nodes[i]);
+  const nodes = [...where.childNodes]; // а так заработало
+  // const nodes = where.childNodes; - так не работало
+
+  for (const node of nodes) {
+    if (node instanceof Element) {
+      deleteTextNodesRecursive(node);
     }
-    if (nodes[i] instanceof Text) {
-      nodes[i].remove();
-      i--;
+    if (node instanceof Text) {
+      node.remove();
     }
   }
 }
@@ -158,36 +159,34 @@ function deleteTextNodesRecursive(where) {
    }
  */
 function collectDOMStat(root) {
-  const nodes = root.childNodes;
+  const stat = {
+    tags: {},
+    classes: {},
+    texts: 0,
+  };
 
-  if (!collectDOMStat.stat) {
-    collectDOMStat.stat = {
-      tags: {},
-      classes: {},
-      texts: 0,
-    };
-  }
-
-  for (let i = 0; i < nodes.length; i++) {
-    if (nodes[i] instanceof Element) {
-      const tagName = nodes[i].tagName;
-      collectDOMStat.stat.tags[tagName] = collectDOMStat.stat.tags[tagName]
-        ? ++collectDOMStat.stat.tags[tagName]
-        : 1;
-
-      for (const className of nodes[i].classList) {
-        collectDOMStat.stat.classes[className] = collectDOMStat.stat.classes[className]
-          ? ++collectDOMStat.stat.classes[className]
-          : 1;
+  function getStat(where) {
+    const nodes = where.childNodes;
+    for (const node of nodes) {
+      if (node instanceof Text) {
+        stat.texts++;
       }
-      collectDOMStat(nodes[i]);
-    }
-    if (nodes[i] instanceof Text) {
-      collectDOMStat.stat.texts++;
+      if (node instanceof Element) {
+        const tagName = node.tagName;
+        stat.tags[tagName] = stat.tags[tagName] ? ++stat.tags[tagName] : 1;
+
+        for (const className of node.classList) {
+          stat.classes[className] = stat.classes[className]
+            ? ++stat.classes[className]
+            : 1;
+        }
+        getStat(node);
+      }
     }
   }
 
-  return collectDOMStat.stat;
+  getStat(root);
+  return stat;
 }
 
 /*
