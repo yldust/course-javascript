@@ -29,7 +29,7 @@
    homeworkContainer.appendChild(newDiv);
  */
 
-//import { loadAndSortTowns } from './functions';
+import { loadAndSortTowns } from './functions';
 import './towns.html';
 
 const homeworkContainer = document.querySelector('#app');
@@ -40,7 +40,9 @@ const homeworkContainer = document.querySelector('#app');
  Массив городов пожно получить отправив асинхронный запрос по адресу
  https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json
  */
-function loadTowns() {}
+function loadTowns() {
+  return loadAndSortTowns();
+}
 
 /*
  Функция должна проверять встречается ли подстрока chunk в строке full
@@ -53,10 +55,12 @@ function loadTowns() {}
    isMatching('Moscow', 'SCO') // true
    isMatching('Moscow', 'Moscov') // false
  */
-function isMatching(full, chunk) {}
+function isMatching(full, chunk) {
+  return full.toUpperCase().includes(chunk.toUpperCase());
+}
 
 /* Блок с надписью "Загрузка" */
-//const loadingBlock = homeworkContainer.querySelector('#loading-block');
+const loadingBlock = homeworkContainer.querySelector('#loading-block');
 /* Блок с надписью "Не удалось загрузить города" и кнопкой "Повторить" */
 const loadingFailedBlock = homeworkContainer.querySelector('#loading-failed');
 /* Кнопка "Повторить" */
@@ -66,13 +70,52 @@ const filterBlock = homeworkContainer.querySelector('#filter-block');
 /* Текстовое поле для поиска по городам */
 const filterInput = homeworkContainer.querySelector('#filter-input');
 /* Блок с результатами поиска */
-//const filterResult = homeworkContainer.querySelector('#filter-result');
+const filterResult = homeworkContainer.querySelector('#filter-result');
 
-retryButton.addEventListener('click', () => {});
+let towns = [];
 
-filterInput.addEventListener('input', function () {});
+retryButton.addEventListener('click', () => {
+  tryLoadTowns();
+});
+
+filterInput.addEventListener('input', function () {
+  updateInputFilter(this.value);
+});
 
 loadingFailedBlock.classList.add('hidden');
 filterBlock.classList.add('hidden');
+
+function tryLoadTowns() {
+  loadTowns().then(
+    (result) => {
+      towns = result;
+      loadingBlock.classList.add('hidden');
+      loadingFailedBlock.classList.add('hidden');
+      filterBlock.classList.remove('hidden');
+    },
+    (error) => {
+      loadingBlock.classList.add('hidden');
+      loadingFailedBlock.classList.remove('hidden');
+    }
+  );
+}
+
+function updateInputFilter(filterVal) {
+  filterResult.innerHTML = '';
+
+  const fragment = document.createDocumentFragment();
+
+  for (const town of towns) {
+    if (filterVal && isMatching(town.name, filterVal)) {
+      const townDiv = document.createElement('div');
+      townDiv.textContent = town.name;
+      fragment.append(townDiv);
+    }
+  }
+
+  filterResult.append(fragment);
+}
+
+tryLoadTowns();
 
 export { loadTowns, isMatching };
