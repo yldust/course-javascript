@@ -25,9 +25,14 @@ let isDown = false;
 let currentDiv = null;
 
 document.addEventListener(
-  'mouseup',
-  (e) => {
-    isDown = false;
+  'mousedown',
+  function (e) {
+    if (e.target.classList.contains('draggable-div')) {
+      isDown = true;
+      e.target.style.zIndex = counter++;
+      offset = [e.target.offsetLeft - e.clientX, e.target.offsetTop - e.clientY];
+      currentDiv = e.target;
+    }
   },
   true
 );
@@ -40,6 +45,14 @@ document.addEventListener('mousemove', (e) => {
   }
 });
 
+document.addEventListener(
+  'mouseup',
+  (e) => {
+    isDown = false;
+  },
+  true
+);
+
 export function createDiv() {
   const maxWidth = window.innerWidth;
   const maxHeight = window.innerHeight;
@@ -51,6 +64,7 @@ export function createDiv() {
   const background = randColor();
   const newDiv = document.createElement('div');
 
+  newDiv.classList.add('draggable-div');
   newDiv.style.background = background;
   newDiv.style.width = width + 'px';
   newDiv.style.height = height + 'px';
@@ -81,17 +95,5 @@ const addDivButton = homeworkContainer.querySelector('#addDiv');
 
 addDivButton.addEventListener('click', function () {
   const div = createDiv();
-
-  div.addEventListener(
-    'mousedown',
-    function (e) {
-      isDown = true;
-      div.style.zIndex = counter++;
-      offset = [div.offsetLeft - e.clientX, div.offsetTop - e.clientY];
-      currentDiv = div;
-    },
-    true
-  );
-
   homeworkContainer.append(div);
 });
