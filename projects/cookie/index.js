@@ -45,7 +45,6 @@ const addButton = homeworkContainer.querySelector('#add-button');
 // таблица со списком cookie
 const listTable = homeworkContainer.querySelector('#list-table tbody');
 
-//initListTable();
 updateListTable('');
 
 filterNameInput.addEventListener('input', function () {
@@ -66,12 +65,6 @@ addButton.addEventListener('click', () => {
   addNameInput.value = '';
   addValueInput.value = '';
 });
-/*
-function getCookie(name) {
-  var matches = document.cookie.match("(^|;) ?" + name + "=([^;]*)(;|$)");
-  return matches ? matches[2] : undefined;
-}
-*/
 
 function getCookies() {
   const cookies = document.cookie.split('; ').reduce((prev, current) => {
@@ -97,7 +90,6 @@ function addRow(name, value) {
 
   td1.innerText = name;
   td2.innerText = value;
-  td2.id = name;
   td3.innerHTML = '<button id="del-button">удалить</button>';
 
   fragment.appendChild(td1);
@@ -107,27 +99,6 @@ function addRow(name, value) {
 
   return tr;
 }
-
-/*
-function changeCookieCell(id, newValue) {
-  const td = homeworkContainer.querySelector(`#${id}`);
-  if (td) {
-    td.innerText = newValue;
-  }
-}
-*/
-/*
-function initListTable() {
-  const cookies = getCookies();
-  const fragment = document.createDocumentFragment();
-
-  for (name in cookies) {
-    const row = addRow(name, cookies[name]);
-    fragment.append(row);
-  }
-  listTable.innerHTML = '';
-  listTable.appendChild(fragment);
-}*/
 
 listTable.addEventListener('click', (e) => {
   if (e.target.id === 'del-button') {
@@ -149,13 +120,7 @@ function isMatching(full, chunk) {
 function updateListTable(filterValue) {
   const cookies = getCookies();
   const fragment = document.createDocumentFragment();
-  /*
-    if (!filterValue) {
-      listTable.innerHTML = '';
-      initListTable();
-  
-    } else {
-      */
+
   for (const name in cookies) {
     if (isMatching(name, filterValue) || isMatching(cookies[name], filterValue)) {
       const row = addRow(name, cookies[name]);
