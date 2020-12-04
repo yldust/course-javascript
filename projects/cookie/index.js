@@ -108,7 +108,7 @@ listTable.addEventListener('click', (e) => {
       const cookieName = tr.firstChild.innerText;
 
       deleteCookie(cookieName);
-      tr.parentElement.removeChild(tr);
+      listTable.removeChild(tr);
     }
   }
 });
