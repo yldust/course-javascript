@@ -62,8 +62,8 @@ addButton.addEventListener('click', () => {
     updateListTable(filterValue);
   }
 
-  addNameInput.value = '';
-  addValueInput.value = '';
+  //addNameInput.value = '';
+  //addValueInput.value = '';
 });
 
 function getCookies() {
@@ -83,25 +83,20 @@ function deleteCookie(name) {
 
 function addRow(name, value) {
   const tr = document.createElement('tr');
-  const fragment = document.createDocumentFragment();
   const td1 = document.createElement('td');
   const td2 = document.createElement('td');
   const td3 = document.createElement('td');
 
   td1.innerText = name;
   td2.innerText = value;
-  td3.innerHTML = '<button id="del-button">удалить</button>';
+  td3.innerHTML = '<button class="del-button">удалить</button>';
 
-  fragment.appendChild(td1);
-  fragment.appendChild(td2);
-  fragment.appendChild(td3);
-  tr.appendChild(fragment);
-
+  tr.append(td1, td2, td3);
   return tr;
 }
 
 listTable.addEventListener('click', (e) => {
-  if (e.target.id === 'del-button') {
+  if (e.target.classList.contains('del-button')) {
     const tr = e.target.closest('tr');
 
     if (tr) {
