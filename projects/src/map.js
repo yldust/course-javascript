@@ -26,8 +26,8 @@ function init() {
         clusterOpenBalloonOnClick: true,
         clusterBalloonContentLayout: "cluster#balloonCarousel",
         balloonItemContentLayout: balloonContentLayoutClass,
-        balloonContentLayoutHeight: 250,
-        balloonContentLayoutWidth: 370,
+        balloonContentLayoutHeight: 100,
+        balloonContentLayoutWidth: 250,
         balloonCloseButton: false,
     });
 
@@ -85,6 +85,7 @@ function getClusteredBalloonContentLayoutClass() {
         '<div class="feedback-title">' +
         '<div class="feedback-address click-address"><span><i class="fas fa-map-marker-alt"></i></span>' +
         '{{properties.address}}<span class="title-cross"><i data-role="feedback-close" class="fa fa-times" aria-hidden="true"></i></span></div>' +
+        '<input data-role="feedback-coords" type="hidden" value="{{properties.coords}}">' +
         '</div>' +
         '{% if properties.list.length > 0 %}' +
         '<div class="feedback-list" data-role="feedback-list">' +
@@ -95,22 +96,23 @@ function getClusteredBalloonContentLayoutClass() {
         '</div>' +
         '</div>' +
         '{% endif %}' +
-        '<div class="form hide" data-role="feedback-form">' +
-        '<input data-role="feedback-coords" type="hidden" value="{{properties.coords}}">' +
-        '<h3 class="title">Отзыв:</h3>' +
-        '<div class="field">' +
-        '<input data-role="feedback-name" type="text" placeholder="Укажите ваше имя">' +
-        '</div>' +
-        '<div class="field">' +
-        '<input data-role="feedback-place" type="text" placeholder="Укажите место">' +
-        '</div>' +
-        '<div class="field">' +
-        '<textarea data-role="feedback-text" placeholder="Оставьте отзыв" rows="5"></textarea>' +
-        '</div>' +
-        '<div class="f_right">' +
-        '<button data-role="feedback-add" class="button">Добавить</button>' +
-        '</div>' +
-        '</div></div></div>'
+        /* '<div class="form hide" data-role="feedback-form">' +
+         '<input data-role="feedback-coords" type="hidden" value="{{properties.coords}}">' +
+         '<h3 class="title">Отзыв:</h3>' +
+         '<div class="field">' +
+         '<input data-role="feedback-name" type="text" placeholder="Укажите ваше имя">' +
+         '</div>' +
+         '<div class="field">' +
+         '<input data-role="feedback-place" type="text" placeholder="Укажите место">' +
+         '</div>' +
+         '<div class="field">' +
+         '<textarea data-role="feedback-text" placeholder="Оставьте отзыв" rows="5"></textarea>' +
+         '</div>' +
+         '<div class="f_right">' +
+         '<button data-role="feedback-add" class="button">Добавить</button>' +
+         '</div>' +
+         '</div>' +*/
+        '</div></div>'
     );
     return balloonContentLayoutClass;
 
@@ -215,13 +217,15 @@ function documentClick(e) {
         const feedbackCoords = document.querySelector('[data-role=feedback-coords]');
         const coords = JSON.parse(feedbackCoords.value);
 
-        html = getHTMLItem(coords);
-        feedbackList.innerHTML = html;
-        if (feedbackForm.classList.contains("hide")) {
-            feedbackForm.classList.remove("hide");
-        } else {
-            feedbackForm.classList.add("hide");
-        }
+        openPlaceMark(coords);
+        /*
+                html = getHTMLItem(coords);
+                feedbackList.innerHTML = html;
+                if (feedbackForm.classList.contains("hide")) {
+                    feedbackForm.classList.remove("hide");
+                } else {
+                    feedbackForm.classList.add("hide");
+                }*/
     }
 }
 
